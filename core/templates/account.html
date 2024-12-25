@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<div class="container-fluid ps-3">
+ <detail>
+    <h1 style="color:var(--secondary-color)">{{request.user}}  {% if request.user.role == "super" %} (ADMIN) {% endif %} <a href="{% url 'account_logout' %}" class="btn" style="color:white;background-color: red;">Logout</a></h1> 
+    <br>
+    <h4>Email: {{request.user.email}}</h4>
+ </detail>
+ <br>
+ {% if request.user.role == "super" %}
+   <a href="{% url 'core:approvals' %}" class="btn" style="background-color: var(--secondary-color); color:white;"> Approvals </a>
+ {% endif %}
+    <hr>
+<h2 class="pe-5">You have {{request.user.tasks.count}} tasks:</h2>
+
+ <ul>
+    {% for task in request.user.tasks.all %}
+    <li>
+        {% if task.completed %}
+        <a style="color:rgb(2, 191, 2)" href="{% url 'core:place' task.place.id %}">{{task.place}} (COMPLETED)</a>
+        {% else %}
+        <a style="color:var(--secondary-color)" href="{% url 'core:place' task.place.id %}">{{task.place}}</a>
+        {% endif %}
+        <button id="{{task.id}}" onclick="shareTask(this.id)">Share with Friends</button>
+        <script>
+        function shareTask(id) {
+            let information = document.getElementById("taskInformation");
+            let task = information.querySelector(`[taskid="${id}"]`);
+
+            if (!task) {
+                return;
+            }
+
+            const shareData = {
+                title: task.value,
+                text: task.attributes.description.value,
+                url: window.location.origin + task.attributes.url.value,
+            };
+
+            console.log(shareData)
+            if (navigator.share) {
+                navigator.share(shareData)
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+            } else if(navigator.clipboard){
+                navigator.clipboard.writeText(shareData.url)
+                    .then(() => alert("Share url copied to clipboard"))
+                    .catch((error) => console.log('Error copying', error));
+            } else {
+                console.log('Web Share API not supported.');
+            }
+        }
+        </script>
+    </li>
+    {% empty %}
+    No tasks available
+    <a href="{% url 'core:refreshTasks' %}">Refresh Tasks</a>
+    {% endfor %}
+ </ul>
+
+<datalist id="taskInformation">
+    {% for task in request.user.tasks.all %}
+        <option taskId="{{ task.id }}" value="{{task.place}}" description="{{task.place.description}}" url="{% url 'core:shareTask' task.id %}"></option>
+    {% endfor %}
+</datalist>
+</div>
+{% endblock %}

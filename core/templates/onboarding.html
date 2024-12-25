@@ -1,0 +1,110 @@
+{% extends 'core/base.html' %} {% load socialaccount %} {% block content %}
+<head>
+  <link rel="stylesheet" href="static/css/styles.css">
+</head>
+
+<body>
+  <div class="container-fluid text-center pt-2 bg-image">
+    <div class="overlay">
+      <h3 class="display-4 text-white animated fadeIn" style="font-weight: bold;">
+        Welcome to Hoos Around
+      </h3>
+      <p class="lead text-white-50 animated fadeIn delay-1s">
+        Discover and share your favorite places to visit around UVA Grounds!
+      </p>
+    </div>
+  </div>
+  
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-lg-12" style="color: white">
+        <h2 class="container-fluid text-center pt-2">About Hoos Around!</h2>
+        <p>
+          Hoos Around is an interactive, gamified location hunt designed to help you explore 
+          and discover the hidden gems of UVA grounds. Whether you're a student, faculty, or a visitor, 
+          our app offers an exciting way to learn about the history and significance of various locations 
+          across the campus. Participate in challenges, scan QR codes at different landmarks, and earn 
+          points as you unlock new, intriguing places. Join the Hoos Around community today and start your adventure!
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container my-4">
+    <div class="row">
+      <div class="col-lg-12" style="color: white">
+        <h2 class="container-fluid text-center pt-2">How the Application Works!</h2>
+        <p>You will be provided three locations to find across grounds when you first start. Throughout 
+          your adventure of searching for them, you will find QR codes to scan, which will add the location
+          you're at to your profile. With each scan, you will unlock 2 more locations to discover.
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FAQ Section -->
+  <div class="container my-4">
+    <h2 class="container-fluid text-center pt-2" style="color: white">Frequently Asked Questions</h2>
+    <div id="faq-accordion">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              How do I start the location hunt?
+            </button>
+          </h5>
+        </div>
+  
+        <div id="collapseOne" class="collapse" style="color:black" aria-labelledby="headingOne" data-parent="#faq-accordion">
+          <div class="card-body">
+            Simply register on our platform, and you'll be given your first three locations to discover! If you 
+            want to learn more about the application or would like to submit locations to add to the app,
+            navigate over to the "info" tab!
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Are there any rewards for participating?
+            </button>
+          </h>
+        </div>
+        <div id="collapseTwo" class="collapse" style="color:black" aria-labelledby="headingTwo" data-parent="#faq-accordion">
+          <div class="card-body">
+            No, there are no tangible rewards for participating. However, you get to learn more about UVA
+            and the wonderful hidden gems it has to offer! You'll find many new places you might've not known of
+            before and introduce them to your friends.
+          </div>
+        </div>
+      </div>
+      <!-- Add more FAQ items as needed -->
+    </div>
+  </div>
+  
+  
+  <!-- Contact Section -->
+  {% comment %} <div class="container-fluid bg-light text-dark p-5 mt-4">
+    <div class="container">
+      <h2>Contact Us</h2>
+      <p>Have questions or suggestions? We'd love to hear from you!</p>
+      <form action="/path/to/your/form/processing/script" method="POST">
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+      </form>
+    </div>
+  </div> {% endcomment %}
+</body>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}{% block content %}
+
+<head>
+    <style>
+        body {
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <h1>Congratulations!</h1>
+    <p class="lead">You have Checked Off {{ place.name }}!</p>
+    <img src="{{ place.thumbnail }}" alt="{{ place }} Thumbnail">
+    <br>
+    <br>
+        <a class="btn" style="background-color: var(--secondary-color); color:white" href="{% url 'core:map' %}"> Back to Map </a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+{% endblock %}

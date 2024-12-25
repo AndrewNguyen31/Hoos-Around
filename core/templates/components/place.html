@@ -1,0 +1,39 @@
+{% load static %}
+
+<html>
+<head>
+    <title>Printable - {{ place }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/place-print.css' %}">
+</head>
+<body>
+    <h1>{{ place }}</h1>
+    <p>{{ place.description }}</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ place.address }}</td>
+                <td>{{ place.city }}</td>
+                <td>{{ place.state }}</td>
+                <td>{{ place.zip_code }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>
+        <img src="{{ place.pictures.first.img.url }}" width="400px" alt="Image of {{ place.name }}">
+    </p>
+
+    <p>
+        <img src="{% url 'core:qr' place.id %}" alt="Image of {{ place.name }}">
+    </p>
+</body>
+</html>

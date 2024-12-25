@@ -1,0 +1,24 @@
+name: Django Test
+
+on:
+  push:
+    branches:
+      - main  # Change this to the branch you want to trigger the workflow o
+  pull_request:
+jobs:
+  test:
+    name: Run Django Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9  # Set your desired Python version
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt  # Adjust the path to your requirements file
+    - name: Run Django Tests
+      run: |
+        python manage.py test  # Adjust the command to run your tests

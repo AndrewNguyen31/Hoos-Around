@@ -1,0 +1,119 @@
+/* Variables */
+/* Pulled from: brand.virigina.edu */
+:root {
+    --primary-color: #232D4B;
+    --secondary-color: #E57200;
+    --primary-color-25: #C8CBD2;
+    --secondary-color-25: #F9DCBF;
+    --cyan-color: #009FDF;
+    --yellow-color: #FDDA24;
+    --teal-color: #25CAD3;
+    --green-color: #62BB46;
+    --magenta-color: #EF3F6B;
+}
+
+/* Define the Adobe Caslon font family */
+@font-face {
+    font-family: 'Adobe Caslon';
+    src: url('adobe-caslon.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Franklin Gothic';
+    src: url('franklin-gothic.woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bondi';
+    src: url('bondi.ttf');
+}
+
+body {
+    all: unset;
+    font-family: 'Franklin Gothic', serif;
+}
+
+html {
+    background: url("../imgs/noise.png") repeat scroll 0 0 transparent;
+    font-family: 'Franklin Gothic', serif;
+    all: unset;
+    background-image: linear-gradient(to right, #232D4B, #203679);
+    color: white
+}
+
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+ #map {
+    height: 100%;
+  }
+
+  /* 
+   * Optional: Makes the sample page fill the window. 
+   */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+.infoWindowContent {
+    max-width: 300px; 
+}
+
+.infoWindowContent h2 {
+    margin-top: 0;
+    font-size: 1.5em; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.infoWindowContent .infoWindowImageContainer {
+    margin-bottom: 10px;
+    width: 100%;
+    height: auto; 
+}
+
+.infoWindowContent .infoWindowImageContainer img {
+    width: 100%;
+    max-height: 150px; 
+    object-fit: cover;
+}
+
+.infoWindowTitle {
+    font-size: 16px; 
+    margin-bottom: 5px;
+}
+.infoWindowAddress, .infoWindowDescription {
+    font-size: 14px; 
+}
+.infoWindowImageContainer img {
+    width: 100%;
+    height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.bg-image {
+    background: url("../imgs/uva_sunset.jpg") no-repeat center 50%;
+    background-size: cover;
+    position: relative;
+    filter: brightness(200%)
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 150px 0;
+}
+
+.card-body {
+    color: black
+}

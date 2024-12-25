@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+{% if request.user.is_super %}
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src="{{ place.thumbnail }}" alt="{{place}} Thumbnail">
+    <div class="card-body">
+        <h5 class="card-title">{{place.name}}</h5>
+        <p class="card-text">{{place.address}}</p>
+        <p class="card-text">{{place.description}}</p>
+        <p class="card-text">added at: {{place.added}}</p>
+
+        <h5 class="card-text">Submission</p2>
+        <p class="card-text">Do you want to approve this place?</p>
+        <hr />
+        <form method="post">
+            {% csrf_token %}
+            
+            {{form.as_p}}
+            <input type="submit" value="Submit" class="btn btn-danger">
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="container-fluid text-center pt-3" style="background-color: red;">
+    <h2>Only Admins can access approvals.</h2>
+    <br>
+</div>
+{% endif %}
+{% endblock %}

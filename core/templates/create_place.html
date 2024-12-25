@@ -1,0 +1,130 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<style>
+    form {
+        max-width: 600px;
+        margin: auto;
+        padding-top: 20px;
+    }
+
+
+    input[type="text"], textarea {
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
+</style>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group p-12">
+        <h1> Add a Place </h1>
+        <p> Please fill out the form below to add a place to the map. Added places with be submitted for review before being added.</p>
+        {% comment %} {{ place_form.as_p }} {% endcomment %}
+{% comment %} 
+        <div class="form-group">
+            <label for="id_name">Name:</label>
+            <input type="text" class="form-control" name="name" maxlength="500" required="" id="id_name">
+          </div>
+    
+          <div class="form-group">
+            <label for="id_description">Description:</label>
+            <textarea class="form-control" name="description" cols="40" rows="10" required="" id="id_description"></textarea>
+          </div>
+    
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="id_latitude">Latitude:</label>
+              <input type="number" class="form-control" name="latitude" step="any" required="" id="id_latitude">
+            </div>
+    
+            <div class="form-group col-md-6">
+              <label for="id_longitude">Longitude:</label>
+              <input type="number" class="form-control" name="longitude" step="any" required="" id="id_longitude">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="id_address1">Address:</label>
+            <input type="text" class="form-control" name="address" maxlength="1024" required="" id="id_address1">
+          </div>
+        </div>
+    
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="id_city">City:</label>
+              <input type="text" class="form-control" name="city" maxlength="1024" required="" id="id_city">
+            </div>
+    
+            <div class="form-group col-md-6">
+              <label for="id_country">Country:</label>
+              <input type="text" class="form-control" name="country" maxlength="3" required="" id="id_country">
+            </div>
+          </div>
+    
+          <div class="form-group">
+            <label for="id_zip_code">ZIP / Postal code:</label>
+            <input type="text" class="form-control" name="zip_code" maxlength="12" required="" id="id_zip_code">
+          </div>
+    </div> {% endcomment %}
+
+    {{ place_form.as_p}}
+
+    {{ picture_formset.management_form }}
+    <div id="pictures-formset">
+        <h3> Upload Pictures of a Place</h3>
+        <p>For each picture, a caption is required for accessibilty purposes.</p>
+
+        {% for form in picture_formset %}
+            {{ form.as_table }}
+        {% endfor %}
+    </div>
+    <div id="empty-form" style="display: none;">
+        {{ picture_formset.empty_form.as_table }}
+    </div>
+    
+    <button id="add-picture-form" type="button">Add Another Picture</button>
+    <input type="submit" value="Submit">
+</form>
+
+<script>
+    document.getElementById('add-picture-form').addEventListener('click', function() {
+        var form_idx = document.getElementById('id_form-TOTAL_FORMS').value;
+        var new_form = document.getElementById('empty-form').innerHTML.replace(/__prefix__/g, form_idx);
+        document.getElementById('pictures-formset').innerHTML += new_form;
+        document.getElementById('id_form-TOTAL_FORMS').value = parseInt(form_idx) + 1;
+    });
+
+    function initAutocomplete() {
+
+        // from: chatGPT
+        var input = document.getElementById('id_address1');
+        var autocomplete = new google.maps.places.Autocomplete(input, {
+            types: ['geocode'],
+            componentRestrictions: {country: 'us'}
+            
+        });
+
+        autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            var latitude = place.geometry.location.lat();
+            var longitude = place.geometry.location.lng();
+
+            // You can do something with the latitude and longitude, for example, update hidden form fields
+            document.getElementById('id_latitude').value = latitude;
+            document.getElementById('id_longitude').value = longitude;
+            document.getElementById('id_address1').value = place.formatted_address;
+
+            // these can fail if the user doesn't enter all the address components
+            document.getElementById('id_city').value = place.address_components[place.address_components.length - 5].long_name;
+            document.getElementById('id_country').value = place.address_components[place.address_components.length - 2].short_name;
+            document.getElementById('id_zip_code').value = place.address_components[place.address_components.length - 1].long_name;
+        });
+    }
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&libraries=places&callback=initAutocomplete" async defer></script>
+
+
+{% endblock %}
+

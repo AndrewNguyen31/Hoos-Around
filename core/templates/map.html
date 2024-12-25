@@ -1,0 +1,174 @@
+{% extends 'core/base.html' %} {% load socialaccount %} {% block content %}
+<h1 class="text-center">Map</h1>
+<div class="container-fluid fill">
+<div id="map" style="height: 700px; width: 100%;"></div>
+</div>
+
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+</script>
+
+<script>
+let map;
+let selectedLocation = null;
+let selectedAddress = null;
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 38.0359937, lng: -78.5031717 }, // Coordinates for the Rotunda
+        zoom: 14,
+        mapTypeId: 'satellite',
+        tilt: 40
+    });
+
+    const approvedPlaces = JSON.parse(document.getElementById('approved-places-data').textContent);
+
+    approvedPlaces.forEach(function(place) {
+        if (typeof place.fields.latitude === 'number' && typeof place.fields.longitude === 'number') {
+            const location = { lat: place.fields.latitude, lng: place.fields.longitude };
+            const marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                title: place.fields.name
+            });
+            
+              const infoWindowContent = `
+    <div class="infoWindowContent text-center" style="color:black">
+        <h2 class="infoWindowTitle"><a href="${place.url}">${place.fields.name}</a></h2>
+        <p class="infoWindowAddress"><strong>Address:</strong> ${place.fields.address1}, ${place.fields.zip_code}</p>
+        <div class="infoWindowImageContainer">
+            <img src="${place.thumbnail}" alt="Image of ${place.fields.name}">
+        </div>
+        <p class="infoWindowDescription"><strong>Description:</strong>${place.fields.description}</p>
+      </div>
+`;
+            // Create an InfoWindow
+            const infowindow = new google.maps.InfoWindow({
+                content: infoWindowContent
+            });
+
+            // Add click event listener to the marker to open the InfoWindow
+            marker.addListener('click', function() {
+                infowindow.open(map, marker);
+            });
+        }
+    });
+}
+
+
+function fetchLocationName(latLng, callback) {
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latLng.lat()},${latLng.lng()}&key={{ google_maps_api_key }}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === "OK") {
+          const name = data.results[0]?.formatted_address || "Unknown Location";
+          callback(name);
+        } else {
+          console.error('Geocoding failed:', data.status);
+          callback("Unknown Location");
+        }
+      })
+      .catch(error => {
+        console.error('Error during fetch operation:', error.message);
+        callback("Unknown Location");
+      });
+  }
+
+
+function getAddressFromLatLng(latLng) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'location': latLng }, function (results, status) {
+        if (status === 'OK') {  
+            if (results[0]) {
+                selectedAddress = results[0].formatted_address;
+            } else {
+                selectedAddress = "Unknown Location";
+            }
+        } else {
+            console.error('Geocoder failed due to: ' + status);
+            selectedAddress = "Unknown Location";
+        }
+    });
+}
+
+function markLocationAsVisited() {
+    if (selectedLocation) {
+      const location = {
+        lat: selectedLocation.getPosition().lat(),
+        lng: selectedLocation.getPosition().lng(),
+        name: selectedLocation.name || "Unknown Location"
+      };
+
+      // Add the location directly to the visited locations list
+      addLocationToList(location);
+
+
+      // Optionally, you can still send the location to the server if needed
+      fetch("/mark_visited/", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify(location)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status !== "success") {
+          console.error('Failed to mark location as visited', data);
+        }
+      })
+      .catch(error => {
+        console.error('Error during fetch operation:', error.message);
+      });
+    }
+  }
+
+  function addLocationToList(location) {
+    const listElement = document.getElementById("visitedLocationsList");
+    const listItem = document.createElement("li");
+    listItem.textContent = `${location.name} (Lat: ${location.lat}, Lng: ${location.lng})`;
+    listElement.appendChild(listItem);
+  }
+
+  function fetchVisitedLocations() {
+    // Fetch the visited locations from the server (if needed)
+    // And add them to the list on the page
+    fetch("/visited_locations/")
+    .then(response => response.json())
+    .then(data => {
+      const listElement = document.getElementById("visitedLocationsList");
+      listElement.innerHTML = ""; // Clear the previous list
+      data.visited_places.forEach(place => {
+        addLocationToList(place);
+      });
+    });
+  }
+
+// Call the function to populate the list on page load
+fetchVisitedLocations();
+</script>
+
+<div id="approved-places-data" style="display: none;">
+  {{ approved_places_json|safe }}
+</div>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap"></script>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <h1>Account Information:</h1>
+    <!-- ADD PROFILE PICTURE? -->
+    <h4>Username: {{user.get_username()}}</h4>
+    <h4>Account Name: {{user.get_full_name()}}</h4>
+
+{% endblock content %}

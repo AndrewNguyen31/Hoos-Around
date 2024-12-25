@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table th,
+table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+table th {
+  background-color: #f2f2f2;
+}
+
+@media print {
+  /* Remove headers and footers */
+  @page {
+    size: auto;
+    margin: 0;
+  }
+  html {
+    background: blue;
+    color: blue;
+    margin: 0px; /* this affects the margin on the html before sending to printer */
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  body::-webkit-scrollbar {
+    display: none;
+  }
+
+  @top-center {
+    content: "";
+  }
+  @bottom-center {
+    content: "";
+  }
+
+  /* Ensure content is centered on the printed page */
+  body {
+    text-align: center;
+  }
+}

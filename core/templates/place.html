@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ place }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid text-center">
+<detail>
+<h1>{{ place }}<h1>
+<h4>{{ place.description }}</h4>
+<h3>{{ place.address }}</h3>
+</detail>
+
+<detail>
+    {% for picture in place.pictures.all %}
+        <img src="{{ picture.img.url }}" alt="{{ picture.description }}" width="350px" />
+    {% empty %}
+    <p>No pictures</p>
+    {% endfor %}
+</detail>
+
+<hr>
+
+<detail>
+    <img src="{% url 'core:qr' place.id %}" alt="QR Code" width="250px" style="background-color: white;"/>
+</detail>
+
+<div>
+    {% if owner %}
+    <p>You are the owner</p>
+    {% comment %} <a href="{% url 'core:print' place.id %}" target="_blank">Link to the printable version</a> {% endcomment %}
+    {% comment %}https://www.sitepoint.com/css-printer-friendly-pages/{% endcomment %}
+    {% else %}
+    {% endif %}
+</div>
+
+<hr>
+
+{% if request.user.is_authenticated %}
+    {% if has_task %}
+        <a class="btn btn-primary" href="{% url 'core:complete' place.id %}">Manually check off task</a>
+    {% else %}
+        <p>You do not have this task</p>
+    {% endif %}
+{% else %}
+<p>get authenticated</p>
+{% endif %}
+
+<hr>
+</div>
+{% endblock %}

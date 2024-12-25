@@ -1,0 +1,48 @@
+[{
+  "name": "The Rotunda",
+  "description": "the big dome in the middle of grounds",
+  "street": "1826 University Ave",
+  "zip": "22904",
+  "latitude": 38.035477,
+  "longitude": -78.503500
+},
+{
+  "name": "carrs hill",
+  "description": "where the president lives",
+  "street": "1900 Carrs Hill Rd",
+  "zip": "22903",
+  "latitude": 38.037945,
+  "longitude": -78.504178
+},
+{
+  "name": "McCormick Observatory",
+  "description": "the observatory in the observatory hill",
+  "street": "600 McCormick, Rd",
+  "zip": "22904",
+  "latitude": 38.033088,
+  "longitude": -78.522559
+},
+{
+  "name": "Scott Stadium",
+  "description": "where we lose football games",
+  "street": "1815 Stadium Rd",
+  "zip": "22904",
+  "latitude": 38.031260,
+  "longitude": -78.513923
+},
+{
+  "name": "Student Health and Wellness Building",
+  "description": "Where we go when we are sick (and not sick)",
+  "street": "550 Brandon Ave",
+  "zip": "22903",
+  "latitude": 38.030159,
+  "longitude": -78.503913
+}, 
+{
+  "name": "Charlottesville Historic Downtown Area",
+  "description": "A nice, walkable street to enjoys Charlottesville",
+  "street": "109 2nd St NE",
+  "zip": "22902",
+  "latitude": 38.030592,
+  "longitude": -78.480755
+}]

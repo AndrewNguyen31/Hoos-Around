@@ -1,0 +1,26 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+{% if request.user.is_super %}
+<div class="row ps-4" id="approval-queue">
+    <h1 class="text-center">Approval Queue</h1>
+    {% for place in places %}
+    <div class="card" style="width: 16rem; background-color:var(--secondary-color-25)">
+        <img class="card-img-top" src="{{ place.thumbnail }}" alt="{{ place }} Thumbnail">
+        <div class="card-body" style="color:black">
+            <h5 class="card-title">{{place.name}}</h5>
+            <p class="card-text">{{place.address}}</p>
+            <p class="card-text">{{place.description}}</p>
+            <p class="card-text">added at: {{place.added}}</p>
+            <a href="{% url 'core:approve' place.id %}" class="btn btn-primary">Review</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="container-fluid text-center pt-3" style="background-color: red;">
+    <h2>Only Admins can access the approval queue.</h2>
+    <br>
+</div>
+{% endif %}
+{% endblock %}

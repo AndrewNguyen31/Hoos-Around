@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<div class="row">
+
+<div class="col" style="margin-top: 20px;">
+<h2>User Leaderboard</h2>
+
+<section>
+<table class="table" style="color:var(--secondary-color); padding: 20px;">
+  <thead>
+      <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Completed Tasks Count</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for user in user_ranking %}
+          <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ user }}</td>
+              <td>{{ user.completed_tasks_count }}</td>
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<div class="col" style="margin-top: 20px;">
+<h2>Place Leaderboard</h2>
+
+<table class="table" style="color:var(--secondary-color); padding: 20px;">
+  <thead>
+      <tr>
+          <th>Rank</th>
+          <th>User</th>
+          <th>Completed Tasks Count</th>
+      </tr>
+  </thead>
+  <tbody>
+      {% for place in place_ranking %}
+          <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ place }}</td>
+              <td>{{ place.completed_tasks_count }}</td>
+          </tr>
+      {% endfor %}
+  </tbody>
+</table>
+</section>
+</div>
+</div>
+
+{% endblock %}
